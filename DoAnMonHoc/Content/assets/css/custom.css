@@ -1,0 +1,38 @@
+/*
+Custom Css
+*/
+.tm-login-col {
+  max-width: 470px;
+}
+
+.tm-block {
+  padding: 40px;
+  -webkit-box-shadow: 1px 1px 5px 0 #455c71;
+  -moz-box-shadow: 1px 1px 5px 0 #455c71;
+  box-shadow: 1px 1px 5px 0 #455c71;
+  min-height: 350px;
+  height: 100%;
+  max-height: 450px;
+}
+
+.tm-bg-primary-dark {
+  background-color: #435c70;
+}
+
+.tm-block-h-auto {
+  min-height: 1px;
+  max-height: none;
+  height: auto;
+}
+
+.form-control {
+  background-color: #54657d;
+  color: #fff;
+  border: 0;
+}
+.form-control:focus {
+  background-color: #60738e;
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 0 0.1rem rgb(180, 206, 233, 0.5);
+}

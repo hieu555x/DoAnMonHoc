@@ -1,0 +1,325 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout_Admin.cshtml";
+}
+@using DoAnMonHoc.Models
+@{ 
+    CommonInfo data = (CommonInfo)HttpContext.Current.Application["DungChung"];
+}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <p class="text-white mt-5 mb-5">Welcome back, <b>@TempData["admin"]</b></p>
+        </div>
+    </div>
+    @{ 
+        TempData.Keep("admin");
+    }
+    <!-- row -->
+    
+    <div class="row tm-content-row">
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller">
+                <h2 class="tm-block-title">Lượng Hàng Hóa Còn Tồn Trong Kho</h2>
+                <div id="pieChartContainer">
+                    <div id="chartContainer" style="height: 350px; width: 100%;"></div>
+                    @*<div id="chartContainer" style="height: 350px; width: 100%;"></div>*@
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow">
+                <h2 class="tm-block-title">Ý Kiến Phản Hồi Từ Khách Hàng</h2>
+                <div class="tm-notification-items">
+                    @foreach (var item in data.PhanHoi().OrderByDescending(a=>a.NgayDang))
+                    {
+                        <div class="media tm-notification-item">
+                            <div>
+                                <p style="font-weight:bold">
+                                    Tên Người Đăng: @item.TenKH
+                                </p>
+                                <p>
+                                    <b>Email:</b> @item.Email
+                                </p>
+                                <p style="word-break:break-word">
+                                    <b>Nội Dung:</b> @item.NoiDung
+                                </p>
+                                <span class="tm-small tm-text-color-secondary">Ngày Đăng: @item.NgayDang</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-12 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll">
+                <h2 class="tm-block-title">Danh Sách Các Đơn Đặt Hàng</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Mã Đơn Hàng</th>
+                            <th scope="col">Tên Khách Hàng</th>
+                            <th scope="col">Ngày Đặt Hàng</th>
+                            <th scope="col">Ngày Giao Hàng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in data.DonDatHang().OrderByDescending(a=>a.NgayDat))
+                        {
+                            <tr>
+                                <th scope="row"><b>@item.SoDH</b></th>
+                                <td>@data.KhachHang().SingleOrDefault(a=>a.MaKH==item.MaKH).HoTen</td>
+                                <td>@item.NgayDat</td>
+                                <td>@item.NgayGiao</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+        Chart.defaults.global.defaultFontColor = 'white';
+        let ctxLine,
+            ctxBar,
+            ctxPie,
+            optionsLine,
+            optionsBar,
+            optionsPie,
+            configLine,
+            configBar,
+            configPie,
+            lineChart;
+        barChart, pieChart;
+        // DOM is ready
+        $(function () {
+            drawLineChart(); // Line Chart
+            drawBarChart(); // Bar Chart
+            drawPieChart(); // Pie Chart
+
+            $(window).resize(function () {
+                updateLineChart();
+                updateBarChart();
+            });
+        })
+</script>
+
+<script type="text/javascript">
+    const width_threshold = 480;
+
+    function drawLineChart() {
+        if ($("#lineChart").length) {
+            ctxLine = document.getElementById("lineChart").getContext("2d");
+            optionsLine = {
+                scales: {
+                    yAxes: [
+                      {
+                          scaleLabel: {
+                              display: true,
+                              labelString: "Hits"
+                          }
+                      }
+                    ]
+                }
+            };
+
+            // Set aspect ratio based on window width
+            optionsLine.maintainAspectRatio =
+              $(window).width() < width_threshold ? false : true;
+
+            configLine = {
+                type: "line",
+                data: {
+                    labels: [
+                      "January",
+                      "February",
+                      "March",
+                      "April",
+                      "May",
+                      "June",
+                      "July"
+                    ],
+                    datasets: [
+                      {
+                          label: "Latest Hits",
+                          data: [88, 68, 79, 57, 50, 55, 70],
+                          fill: false,
+                          borderColor: "rgb(75, 192, 192)",
+                          cubicInterpolationMode: "monotone",
+                          pointRadius: 0
+                      },
+                      {
+                          label: "Popular Hits",
+                          data: [33, 45, 37, 21, 55, 74, 69],
+                          fill: false,
+                          borderColor: "rgba(255,99,132,1)",
+                          cubicInterpolationMode: "monotone",
+                          pointRadius: 0
+                      },
+                      {
+                          label: "Featured",
+                          data: [44, 19, 38, 46, 85, 66, 79],
+                          fill: false,
+                          borderColor: "rgba(153, 102, 255, 1)",
+                          cubicInterpolationMode: "monotone",
+                          pointRadius: 0
+                      }
+                    ]
+                },
+                options: optionsLine
+            };
+
+            lineChart = new Chart(ctxLine, configLine);
+        }
+    }
+
+    function drawBarChart() {
+        if ($("#barChart").length) {
+            ctxBar = document.getElementById("barChart").getContext("2d");
+
+            optionsBar = {
+                responsive: true,
+                scales: {
+                    yAxes: [
+                      {
+                          barPercentage: 0.2,
+                          ticks: {
+                              beginAtZero: true
+                          },
+                          scaleLabel: {
+                              display: true,
+                              labelString: "Hits"
+                          }
+                      }
+                    ]
+                }
+            };
+
+            optionsBar.maintainAspectRatio =
+              $(window).width() < width_threshold ? false : true;
+
+            /**
+             * COLOR CODES
+             * Red: #F7604D
+             * Aqua: #4ED6B8
+             * Green: #A8D582
+             * Yellow: #D7D768
+             * Purple: #9D66CC
+             * Orange: #DB9C3F
+             * Blue: #3889FC
+             */
+
+            configBar = {
+                type: "horizontalBar",
+                data: {
+                    labels: ["Red", "Aqua", "Green", "Yellow", "Purple", "Orange", "Blue"],
+                    datasets: [
+                      {
+                          label: "# of Hits",
+                          data: [33, 40, 28, 49, 58, 38, 44],
+                          backgroundColor: [
+                            "#F7604D",
+                            "#4ED6B8",
+                            "#A8D582",
+                            "#D7D768",
+                            "#9D66CC",
+                            "#DB9C3F",
+                            "#3889FC"
+                          ],
+                          borderWidth: 0
+                      }
+                    ]
+                },
+                options: optionsBar
+            };
+
+            barChart = new Chart(ctxBar, configBar);
+        }
+    }
+
+    function drawPieChart() {
+        if ($("#pieChart").length) {
+            var chartHeight = 300;
+
+            $("#pieChartContainer").css("height", chartHeight + "px");
+
+            ctxPie = document.getElementById("pieChart").getContext("2d");
+
+            optionsPie = {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10
+                    }
+                },
+                legend: {
+                    position: "top"
+                }
+            };
+
+            configPie = {
+                type: "pie",
+                data: {
+                    datasets: [
+                      {
+                          data: [18.24, 6.5, 9.15],
+                          backgroundColor: ["#F7604D", "#4ED6B8", "#A8D582"],
+                          label: "Storage"
+                      }
+                    ],
+                    labels: [
+                      "Used Storage (18.240GB)",
+                      "System Storage (6.500GB)",
+                      "Available Storage (9.150GB)"
+                    ]
+                },
+                options: optionsPie
+            };
+
+            pieChart = new Chart(ctxPie, configPie);
+        }
+    }
+
+    function updateLineChart() {
+        if (lineChart) {
+            lineChart.options = optionsLine;
+            lineChart.update();
+        }
+    }
+
+    function updateBarChart() {
+        if (barChart) {
+            barChart.options = optionsBar;
+            barChart.update();
+        }
+    }
+
+</script>
+
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<script>
+    window.onload = function () {
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            data: [{
+                type: "doughnut",
+                startAngle: 60,
+                indexLabelFontSize: 16,
+                indexLabel: "{label} - {y}%",
+                toolTipContent: "<b>{label}:</b> {y}%",
+                dataPoints: @Html.Raw(ViewBag.DataPoints),
+                }]
+        });
+        chart.render();
+
+    }
+</script>

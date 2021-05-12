@@ -1,0 +1,134 @@
+﻿@model DoAnMonHoc.Models.SanPham
+
+@{
+    ViewBag.Title = "Sua";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout_Admin.cshtml";
+}
+
+
+<div class="container tm-mb-big tm-mb-big">
+    <div class="row">
+        <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+            <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+                <div class="row">
+                    <div class="col-lg-12" style="text-align:center">
+                        <h1 class="tm-block-title d-inline-block">
+                            Sửa thông tin của sản phẩm
+                        </h1>
+                    </div>
+                </div>
+                <div class="row tm-edit-product-row">
+                    <div class="col-12">
+                        @using (Html.BeginForm())
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    <label for="MaSP" class="control-label col-md-6">
+                                        Mã Sản Phẩm
+                                    </label>
+                                    <div class="col-md-10">
+                                        <div style="font:18px;padding:5px 0 0 5px;color:white">@Model.MaSP</div>
+                                    </div>
+                                </div>
+                                <div class="form-horizontal">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                    <div class="form-group">
+                                        <label for="TenSP" class="control-label col-md-6">
+                                            Tên Sản Phẩm
+                                        </label>
+                                        <div class="col-md-12">
+                                            <input class="form-control text-box single-line" id="TenSP" name="TenSP" type="text" required />
+                                            <span class="field-validation-valid text-danger" data-valmsg-for="TenSP" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="GiaBan" class="control-label col-md-6">
+                                            Giá Bán
+                                        </label>
+                                        <div class="col-md-12">
+                                            <input class="form-control text-box single-line" id="GiaBan" name="GiaBan" type="number" required />
+                                            <span class="field-validation-valid text-danger" data-valmsg-for="GiaBan" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MoTa" class="control-label col-md-6">
+                                            Mô Tả
+                                        </label>
+                                        <div class="col-md-12">
+                                            <textarea class="form-control validate" rows="3" required="" name="MoTa"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="AnhBia" class="control-label col-md-6">
+                                            Ảnh Sản Phẩm
+                                        </label>
+                                        <div class="col-md-12">
+                                            <input style="color:white" id="AnhBia" name="fileupload" type="file" required />
+                                            <span class="field-validation-valid text-danger" data-valmsg-for="AnhBia" data-valmsg-replace="true"></span>
+                                            <img src=@Url.Content("~/Content/images/"+Model.AnhBia) width="120px" /> <span style="color:yellow">(Ảnh hiện tại)</span>
+                                            <p style="color:yellow;font-weight:bold">@ViewBag.ThongBao</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="NgayCapNhat" class="control-label col-md-6">
+                                            Ngày Đăng
+                                        </label>
+                                        <div class="col-md-12">
+                                            <input class="form-control text-box single-line" id="NgayCapNhat" name="NgayCapNhat" type="date" required />
+                                            <span class="field-validation-valid text-danger" data-valmsg-for="NgayCapNhat" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="SoLuongTon" class="control-label col-md-6">
+                                            Số Lượng Tồn
+                                        </label>
+                                        <div class="col-md-12">
+                                            <input class="form-control text-box single-line" id="SoLuongTon" name="SoLuongTon" type="number" required />
+                                            <span class="field-validation-valid text-danger" data-valmsg-for="SoLuongTon" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MaTheLoai" class="control-label col-md-6">
+                                            Thể Loại
+                                        </label>
+                                        <div class="col-md-12">
+                                            @Html.DropDownList("MaTheLoai", (IEnumerable<SelectListItem>)ViewBag.MaTheLoai, new { @class = "custom-select tm-select-accounts" })
+                                            <span class="field-validation-valid text-danger" data-valmsg-for="MaTheLoai" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="MaHang" class="control-label col-md-6">
+                                            Tên Hãng
+                                        </label>
+                                        <div class="col-md-12">
+                                            @Html.DropDownList("MaHang", (IEnumerable<SelectListItem>)ViewBag.MaHang, new { @class = "custom-select tm-select-accounts" })
+                                            <span class="field-validation-valid text-danger" data-valmsg-for="MaHang" data-valmsg-replace="true"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="Save" class="btn btn-default" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

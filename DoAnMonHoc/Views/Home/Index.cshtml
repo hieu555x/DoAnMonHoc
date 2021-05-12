@@ -1,0 +1,146 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+@using DoAnMonHoc.Models;
+@model IEnumerable<DoAnMonHoc.Models.SanPham>
+<!-- Start Banner Hero -->
+<div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        @{ 
+            var items = Model.OrderBy(a => a.NgayCapNhat).Take(3).ToList();
+        }
+        <div class="carousel-item active">
+            <div class="container">
+                <div class="row p-5">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src=@Url.Content("~/Content/images/"+@items[0].AnhBia) alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 d-flex align-items-center">
+                        <div class="text-align-left align-self-center">
+                            <h1 class="h1 text-success"><b>Spader</b> eCommerce</h1>
+                            <h3 class="h2">@items[0].TenSP</h3>
+                            <p>
+                                @items[0].MoTa.Split('.')[0].@items[0].MoTa.Split('.')[1].@items[0].MoTa.Split('.')[2] <text>...</text>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="container">
+                <div class="row p-5">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src=@Url.Content("~/Content/images/"+@items[1].AnhBia) alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 d-flex align-items-center">
+                        <div class="text-align-left align-self-center">
+                            <h1 class="h1 text-success"><b>Spader</b> eCommerce</h1>
+                            <h3 class="h2">@items[1].TenSP</h3>
+                            <p>
+                                @items[1].MoTa.Split('.')[0].@items[1].MoTa.Split('.')[1].@items[1].MoTa.Split('.')[2] <text>...</text>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="container">
+                <div class="row p-5">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src=@Url.Content("~/Content/images/"+@items[2].AnhBia) alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 d-flex align-items-center">
+                        <div class="text-align-left align-self-center">
+                            <h1 class="h1 text-success"><b>Spader</b> eCommerce</h1>
+                            <h3 class="h2">@items[2].TenSP</h3>
+                            <p>
+                                @items[2].MoTa.Split('.')[0].@items[2].MoTa.Split('.')[1].@items[2].MoTa.Split('.')[2] <text>...</text>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+    <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+        <i class="fas fa-chevron-right"></i>
+    </a>
+</div>
+<!-- End Banner Hero -->
+<!-- Start Categories of The Month -->
+<section class="container py-5">
+    <div class="row text-center pt-3">
+        <div class="col-lg-6 m-auto">
+            <h1 class="h1">Các Loại Hàng</h1>
+            
+        </div>
+    </div>
+    <div class="row">
+        @{ 
+            CommonInfo data = (CommonInfo)HttpContext.Current.Application["DungChung"];
+            var TheLoai = data.TheLoai().Take(3);
+            var SanPham = data.SanPham();
+        }
+        @foreach (var item in TheLoai)
+        {
+            var AnhBia = SanPham.OrderByDescending(a => a.NgayCapNhat).Where(a => a.MaTheLoai == item.MaTheLoai);
+             <div class="col-12 col-md-4 p-5 mt-3">
+                <a href=@Url.Action("SPTheoTheLoai","Shop",new { id = item.MaTheLoai })><img src=@Url.Content("~/Content/images/"+AnhBia.ToList()[0].AnhBia) class="rounded-circle img-fluid border"></a>
+                <h5 class="text-center mt-3 mb-3">@item.TenTheLoai</h5>
+                <p class="text-center"><a class="btn btn-success" href=@Url.Action("SPTheoTheLoai","Shop",new { id = item.MaTheLoai })>Go Shop</a></p>
+            </div>
+        }
+        
+    </div>
+</section>
+<!-- End Categories of The Month -->
+<!-- Start Featured Product -->
+<section class="bg-light">
+    <div class="container py-5">
+        <div class="row text-center py-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Mặt Hàng Mới Nhất</h1>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var item in Model.OrderByDescending(a=>a.NgayCapNhat).Take(3))
+            {
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href=@Url.Action("ChiTiet","Shop",new { id = item.MaSP })>
+                            <img src=@Url.Content("~/Content/images/"+item.AnhBia) class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                <li>
+                                    <i></i>
+                                    <i></i>
+                                    <i></i>
+                                    <i></i>
+                                    <i></i>
+                                </li>
+                                <li class="text-muted text-right">@String.Format("{0:0,0}",item.GiaBan) VNĐ</li>
+                            </ul>
+                            <a href="shop-single.html" class="h2 text-decoration-none text-dark">@item.TenSP</a>
+                            <p class="card-text">
+                                @item.MoTa.Split('.')[0] <text>...</text>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+        </div>
+    </div>
+</section>
+<!-- End Featured Product -->

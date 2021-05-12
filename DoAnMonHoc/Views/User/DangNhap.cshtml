@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "Đăng Nhập";
+}
+<section class="bg-light me">
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-12 mx-auto tm-login-col">
+                <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h2 class="tm-block-title mb-4">Đăng Ký Người Dùng</h2>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            @using (Html.BeginForm())
+                            {
+                                @Html.ValidationSummary(true)
+                                <p style="color:red">@ViewBag.ThongBao</p>
+                                <div class="form-group">
+                                    <label for="TenDN">Tên Đăng Nhập:</label>
+                                    <input name="TenDN"
+                                           type="text"
+                                           class="form-control validate"
+                                           id="TenDN"
+                                           value=""
+                                           required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="MatKhau">Mật Khẩu:</label>
+                                    <input name="MatKhau"
+                                           type="password"
+                                           class="form-control validate"
+                                           id="MatKhau"
+                                           value=""
+                                           required />
+                                </div>
+                                <div style="text-align: center;">
+                                    <button type="submit" class="btn btn-primary btn-block text-uppercase" style="display:inline-block">
+                                        Đăng Nhập
+                                    </button>
+                                </div>
+                                <div style="text-align: center;padding-top:30px">
+                                    Chưa Có Tài Khoản ? Hãy
+                                    <a href=@Url.Action("DangKy","User")>
+                                        <input type="button" class="btn btn-primary btn-block text-uppercase" style="display:inline-block" value="Đăng Ký" />
+                                    </a>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style type="text/css">
+    .me {
+        padding-top: 50px;
+    }
+
+    .tm-login-col {
+        max-width: 470px;
+    }
+
+    .tm-block {
+        padding: 40px;
+        -webkit-box-shadow: 1px 1px 5px 0 #455c71;
+        -moz-box-shadow: 1px 1px 5px 0 #455c71;
+        box-shadow: 1px 1px 5px 0 #455c71;
+        min-height: 350px;
+        height: 100%;
+        max-height: 450px;
+    }
+
+    .tm-bg-primary-dark {
+        background-color: #fff;
+    }
+
+    .tm-block-h-auto {
+        min-height: 1px;
+        max-height: none;
+        height: auto;
+    }
+
+    .form-control {
+        background-color: white;
+        color: black;
+        border: 1px solid black;
+    }
+
+        .form-control:focus {
+            background-color: white;
+            color: black;
+            border-color: transparent;
+            box-shadow: 0 0 0 0.1rem rgb(180, 206, 233, 0.5);
+        }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            color: black;
+            margin-bottom: 10px;
+        }
+</style>

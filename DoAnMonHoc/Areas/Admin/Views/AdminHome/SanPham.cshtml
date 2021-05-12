@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewBag.Title = "SanPham";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout_Admin.cshtml";
+}
+@using DoAnMonHoc.Models
+@model IEnumerable<DoAnMonHoc.Models.SanPham>
+
+@{ 
+    CommonInfo data = (CommonInfo)HttpContext.Current.Application["DungChung"];
+}
+<div class="container mt-5">
+    <div class="row tm-content-row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-products">
+                <h2 class="tm-block-title">Danh Sách Sản Phẩm</h2>
+                <div class="tm-product-table-container">
+                    <table class="table table-hover tm-table-small tm-product-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Giá Bán</th>
+                                <th scope="col">Số Lượng Còn Trong Kho</th>
+                                <th scope="col">Ngày Cập Nhật</th>
+                                <th scope="col">&nbsp;</th>
+                                <th scope="col">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderByDescending(a=>a.NgayCapNhat))
+                            {
+                                <tr>
+                                    <td class="tm-product-name">@item.TenSP</td>
+                                    <td>@String.Format("{0:0,0}", item.GiaBan) VNĐ</td>
+                                    <td>@item.SoLuongTon Chiếc</td>
+                                    <td>@item.NgayCapNhat</td>
+                                    <td>
+                                        <a href=@Url.Action("Xoa","AdminHome",new { id = item.MaSP }) class="tm-product-delete-link">
+                                            <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href=@Url.Action("Sua","AdminHome",new { id = item.MaSP })>
+                                            <i style="color:white">Sửa</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table container -->
+                <a href=@Url.Action("ThemMoi","AdminHome","Admin")
+                   class="btn btn-primary btn-block text-uppercase mb-3">Thêm Sản Phẩm Mới</a>
+            </div>
+        </div>
+    </div>
+</div>

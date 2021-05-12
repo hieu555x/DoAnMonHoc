@@ -1,0 +1,75 @@
+﻿@using DoAnMonHoc.Models
+@{
+    ViewBag.Title = Model.TenSP;
+    CommonInfo data = (CommonInfo)HttpContext.Current.Application["DungChung"];
+    string hang = data.Hang().SingleOrDefault(a => a.MaHang == Model.MaHang).TenHang.ToString();
+}
+<!-- Modal -->
+<div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="w-100 pt-1 mb-5 text-right">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="" method="get" class="modal-content modal-body border-0 p-0">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" id="inputModalSearch" name="q" placeholder="Search ...">
+                <button type="submit" class="input-group-text bg-success text-light">
+                    <i class="fa fa-fw fa-search text-white"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Open Content -->
+<section class="bg-light">
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-lg-5 mt-5">
+                <div class="card mb-3">
+                    <img class="card-img img-fluid" src=@Url.Content("~/Content/images/"+Model.AnhBia) alt="Card image cap" id="product-detail">
+                </div>
+
+            </div>
+            <!-- col end -->
+            <div class="col-lg-7 mt-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="h2">@Model.TenSP</h1>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6>Giá Bán:</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <p class="h3 py-2">@String.Format("{0:0,0}", @Model.GiaBan) VNĐ</p>
+                            </li>
+                        </ul>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <h6>Hãng Sản Xuất:</h6>
+                            </li>
+                            <li class="list-inline-item">
+                                <p class="text-muted">
+                                    <strong>@hang</strong>
+                                </p>
+                            </li>
+                        </ul>
+
+                        <h6>Mô Tả:</h6>
+                        <p>@Model.MoTa</p>
+                        <div class="col d-grid">
+                            <a href=@Url.Action("ThemGioHang", "Cart", new { MaSP_cart = Model.MaSP, strUrl = Request.Url.ToString() }) >
+                                <input type="submit" class="btn btn-success btn-lg" name="submit" value="Thêm Vào Giỏ Hàng" />
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Close Content -->
+
+<!-- Start Slider Script -->
+<script src="assets/js/slick.min.js"></script>

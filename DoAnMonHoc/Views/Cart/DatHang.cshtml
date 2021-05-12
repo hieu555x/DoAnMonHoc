@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewBag.Title = "Đặt Hàng";
+}
+
+@using DoAnMonHoc.Models
+@model List<Cart>
+
+
+<section class="bg-light me">
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-lg-12 mt-5">
+                <h2 style="text-align:center">THÔNG TIN GIỎ HÀNG</h2>
+                <table align="center">
+                    <tr style="text-align:center;font-weight:bold;background-color:#56ae6c;color:white">
+                        <td class="hang">Mã Sản Phẩm</td>
+                        <td class="hang">Tên Sản Phẩm</td>
+                        <td class="hang">Hình Minh Họa</td>
+                        <td class="hang">Số Lượng</td>
+                        <td class="hang">Đơn Giá</td>
+                        <td class="hang">Thành Tiền</td>
+                        <td class="hang">Xóa Sản Phẩm</td>
+                        <td class="hang"></td>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr style="text-align:center;font-weight:bold">
+                            <td class="hang">@item.MaSP_cart</td>
+                            <td class="hang">@item.TenSP_cart</td>
+                            <td class="hang">
+                                <a href=@Url.Action("ChiTiet","Shop",new { id=item.MaSP_cart }) style="text-decoration:none">
+                                    <img src="@Url.Content("~/Content/images/" + @item.AnhBia_cart)" width="50%" />
+                                </a>
+                            </td>
+                            @using (Html.BeginForm("CapNhatGioHang", "Cart", new { MaSP = item.MaSP_cart }))
+                            {
+                                <td class="hang">
+                                    <input type="number" min="1" name="txtSoLuong" value="@item.SoLuong_cart" />
+                                </td>
+                                <td class="hang">@String.Format("{0:0,0}", @item.GiaBan_cart)</td>
+                                <td class="hang">@String.Format("{0:0,0}", @item.ThanhTien_cart)</td>
+                                <td class="hang">
+                                    <a href=@Url.Action("XoaGioHang","Cart",new { id=item.MaSP_cart }) style="text-decoration:none">
+                                        Xóa
+                                    </a>
+                                </td>
+                                <td class="hang">
+                                    <input style="font-weight:bold;text-align:center;background-color:#56ae6c;color:white;border:none;padding:10px" type="submit" value="Cập Nhật" />
+                                </td>
+                            }
+                        </tr>
+                    }
+                    <tr style="font-weight:bold;text-align:right;color:red">
+                        <td colspan="6">Số Lượng:@ViewBag.TongSoLuong</td>
+                        <td colspan="3">Tổng Tiền:@String.Format("{0:0,0}", @ViewBag.TongTien) VNĐ</td>
+                    </tr>
+                </table>
+                <div style="margin-top:20px">
+                    <a href=@Url.Action("Index","Cart")>
+                        <input style="font-weight:bold;text-align:center;background-color:#56ae6c;color:white;border:none;padding:10px;float:right" type="submit" value="Trở Về Giỏ Hàng" />
+                    </a>
+                </div>
+            </div>
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary(true)
+                <div class="col-lg-12 mt-5">
+                    <h2 style="text-align:center">THÔNG TIN ĐẶT HÀNG</h2>
+                    @{
+                        KhachHang kh = (KhachHang)Session["TaiKhoan"];
+                    }
+                    <table align="center">
+                        <tr style="text-align:center;">
+                            <td class="hang" style="font-weight:bold;background-color:#56ae6c;color:white">Họ Tên Khách Hàng:</td>
+                            <td class="hang" style="font-weight:bold">@kh.HoTen</td>
+                        </tr>
+                        <tr style="text-align:center;">
+                            <td class="hang" style="font-weight:bold;background-color:#56ae6c;color:white">Địa Chỉ:</td>
+                            <td class="hang" style="font-weight:bold">@kh.DiaChiKH</td>
+                        </tr>
+                        <tr style="text-align:center;">
+                            <td class="hang" style="font-weight:bold;background-color:#56ae6c;color:white">Điện Thoại:</td>
+                            <td class="hang" style="font-weight:bold">@kh.DienThoaiKH</td>
+                        </tr>
+                        <tr style="text-align:center;">
+                            <td class="hang" style="font-weight:bold;background-color:#56ae6c;color:white">Ngày Đặt:</td>
+                            <td class="hang" style="font-weight:bold">@DateTime.Now.ToString()</td>
+                        </tr>
+                        <tr style="text-align:center;">
+                            <td class="hang" style="font-weight:bold;background-color:#56ae6c;color:white">Ngày Giao:</td>
+                            <td class="hang" style="font-weight:bold">
+                                <input type="date" name="NgayGiao" required />
+                            </td>
+                        </tr>
+                        <tr style="text-align:center;">
+                            <td></td>
+                            <td class="hang" style="font-weight:bold">
+                                <input class="btn btn-success"  type="submit" value="Đồng Ý Đặt Hàng" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                        }
+        </div>
+    </div>
+</section>
+
+<style type="text/css">
+    .hang {
+        padding: 20px 20px;
+    }
+</style>

@@ -1,0 +1,102 @@
+﻿@model DoAnMonHoc.Models.SanPham
+
+@{
+    ViewBag.Title = "Xoa";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout_Admin.cshtml";
+}
+
+@using DoAnMonHoc.Models
+@{ 
+    CommonInfo data = (CommonInfo)HttpContext.Current.Application["DungChung"];
+}
+<div style="color:white" class="container mt-5">
+    <div class="row tm-content-row">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-products">
+                <h2>Bạn Có Chắc Chắn Muốn Xóa Sản Phẩm Này Chứ?</h2>
+                <div class="tm-product-table-container">
+                    <dl class="dl-horizontal">
+                        <dt>
+                            Tên Sản Phẩm:
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.TenSP)
+                        </dd>
+
+                        <dt>
+                            Giá Bán
+                        </dt>
+
+                        <dd>
+                            @String.Format("{0:0,0}", Model.GiaBan) VNĐ
+                        </dd>
+
+                        <dt>
+                            Mô Tả:
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.MoTa)
+                        </dd>
+
+                        <dt>
+                            Ảnh Bìa:
+                        </dt>
+
+                        <dd>
+                            <img width="20%" src=@Url.Content("~/Content/images/" + Model.AnhBia) />
+                        </dd>
+
+                        <dt>
+                            Ngày Cập Nhật:
+                        </dt>
+
+                        <dd>
+                            @String.Format("{0:MM/dd/yyyy}", Model.NgayCapNhat)
+                        </dd>
+
+                        <dt>
+                            Số Lượng:
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.SoLuongTon)
+                        </dd>
+
+                        <dt>
+                            Thể Loại:
+                        </dt>
+
+                        <dd>
+                            @data.TheLoai().SingleOrDefault(a => a.MaTheLoai == Model.MaTheLoai).TenTheLoai
+                        </dd>
+
+                        <dt>
+                            Hãng:
+                        </dt>
+
+                        <dd>
+                            @data.Hang().SingleOrDefault(a => a.MaHang == Model.MaHang).TenHang
+                        </dd>
+
+                    </dl>
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="col-md-offset-2 col-md-2" style="margin:10px 20px">
+                            <input type="submit" value="Xóa" class="btn btn-primary btn-block text-uppercase mb-3" />
+                        </div>
+                    }
+                    <div class="col-md-offset-2 col-md-2" style="margin:10px 20px">
+                        <a href=@Url.Action("SanPham","AdminHome") >
+                            <input type="submit" value="Trở Về" class="btn btn-primary btn-block text-uppercase mb-3" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
